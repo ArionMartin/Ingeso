@@ -309,9 +309,9 @@ footer {
 
     }
     .contenerdor-sobre-nosotros{
-        flex-direction:column;
+        flex-direction: column;
         justify-content: center;
-        align-items:center;
+        align-items: center;
 
     }
     .sobre-nosotros .contenido-textos{
@@ -368,7 +368,7 @@ footer {
 @media screen and (max-width:500px){
     nav{
         text-align:center;
-        padding: 30px 0 0;
+        padding: 30px 0 0 0;
     }
     nav > a{
         margin-right: 5px;
@@ -379,7 +379,7 @@ footer {
     .textos-header h2{
         font-size: 20px;
     }
-    */ About us */
+    /* About us */
     .imagen-about-us{
         margin-bottom: 60px;
         width:99%;
