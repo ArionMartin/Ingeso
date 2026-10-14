@@ -54,7 +54,7 @@ app.get(
     protegerPagina("administrador"),
     (req, res) => {
         res.sendFile(
-            path.join(__dirname, "public", "administrador.html")
+            path.join(__dirname, "views", "administrador.html")
         );
     }
 );
@@ -65,7 +65,7 @@ app.get(
     protegerPagina("organizador"),
     (req, res) => {
         res.sendFile(
-            path.join(__dirname, "public", "organizador.html")
+            path.join(__dirname, "views", "organizador.html")
         );
     }
 );
