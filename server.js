@@ -1251,6 +1251,68 @@ app.get("/api/admin/estadisticas", verificarAdministrador,
     }
 );
 
+app.patch("/api/admin/usuarios/:id/rol",
+    verificarAdministrador,
+    async (req, res) => {
+
+    const idUsuario = Number(req.params.id);
+    const { rol } = req.body || {};
+    const idAdministrador = req.session.usuario.id;
+
+    const rolesPermitidos = [
+        "participante",
+        "organizador",
+        "administrador"
+    ];
+
+    if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+        return res.status(400).json({
+            error: "ID de usuario inválido"
+        });
+    }
+
+    if (!rolesPermitidos.includes(rol)) {
+        return res.status(400).json({
+            error: "Rol no permitido"
+        });
+    }
+
+    // Evitar que el administrador cambie su propio rol
+    if (idUsuario === idAdministrador) {
+        return res.status(403).json({
+            error: "No puedes modificar tu propio rol"
+        });
+    }
+
+    try {
+        const resultado = await pool.query(
+            `UPDATE usuario
+             SET rol = $1
+             WHERE id = $2
+             RETURNING id, nombre, correo, rol`,
+            [rol, idUsuario]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({
+                error: "Usuario no encontrado"
+            });
+        }
+
+        res.json({
+            mensaje: "Rol actualizado correctamente",
+            usuario: resultado.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error al modificar rol:", error);
+
+        res.status(500).json({
+            error: "No se pudo modificar el rol"
+        });
+    }
+});
+
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log(

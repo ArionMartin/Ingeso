@@ -118,12 +118,16 @@ async function cargarDatos() {
         document.getElementById("totalAsistencias").textContent =
             estadisticas.asistencias;
 
-        mostrarTabla("listaUsuarios", [
-            { titulo: "ID", campo: "id" },
-            { titulo: "Nombre", campo: "nombre" },
-            { titulo: "Correo", campo: "correo" },
-            { titulo: "Rol", campo: "rol" }
-        ], usuarios);
+        
+mostrarTabla("listaUsuarios", [
+    { titulo: "ID", campo: "id" },
+    { titulo: "Nombre", campo: "nombre" },
+    { titulo: "Correo", campo: "correo" },
+    { titulo: "Rol", campo: "rol" }
+], usuarios);
+
+agregarAccionesUsuarios(usuarios);
+
 
         mostrarTabla("listaEventos", [
             { titulo: "ID", campo: "id" },
@@ -163,3 +167,90 @@ document.getElementById("cerrarSesion")
     });
 
 iniciarAdministrador();
+
+function agregarAccionesUsuarios(usuarios) {
+    const tabla = document.querySelector(
+        "#listaUsuarios table"
+    );
+
+    if (!tabla) return;
+
+    const encabezado = tabla.querySelector("thead tr");
+    const columna = document.createElement("th");
+    columna.textContent = "Acciones";
+    encabezado.appendChild(columna);
+
+    const filas = tabla.querySelectorAll("tbody tr");
+
+    filas.forEach((fila, indice) => {
+        const usuario = usuarios[indice];
+
+        const celda = document.createElement("td");
+        const selector = document.createElement("select");
+
+        ["participante", "organizador", "administrador"]
+            .forEach(rol => {
+                selector.add(new Option(rol, rol));
+            });
+
+        selector.value = usuario.rol;
+
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.textContent = "Guardar";
+        boton.className = "btn-guardar-rol";
+
+        // El administrador no cambia su propio rol
+        if (usuario.rol === "administrador") {
+            selector.disabled = true;
+            boton.disabled = true;
+        }
+
+        boton.addEventListener("click", async () => {
+            if (selector.value === usuario.rol) return;
+
+            const confirmado = confirm(
+                `¿Cambiar el rol de ${usuario.nombre} a ${selector.value}?`
+            );
+
+            if (!confirmado) {
+                selector.value = usuario.rol;
+                return;
+            }
+
+            boton.disabled = true;
+
+            try {
+                const respuesta = await fetch(
+                    `/api/admin/usuarios/${usuario.id}/rol`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            rol: selector.value
+                        })
+                    }
+                );
+
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(datos.error);
+                }
+
+                alert("Rol actualizado correctamente");
+                await cargarDatos();
+
+            } catch (error) {
+                alert(error.message);
+                selector.value = usuario.rol;
+                boton.disabled = false;
+            }
+        });
+
+        celda.append(selector, boton);
+        fila.appendChild(celda);
+    });
+}

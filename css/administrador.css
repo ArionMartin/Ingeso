@@ -126,3 +126,23 @@ th {
         grid-template-columns: 1fr;
     }
 }
+
+#listaUsuarios select {
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.btn-guardar-rol {
+    background: #23415b;
+}
+
+.btn-guardar-rol:hover {
+    background: #37688e;
+}
+
+.btn-guardar-rol:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
