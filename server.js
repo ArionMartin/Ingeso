@@ -1178,6 +1178,68 @@ function verificarAdministrador(req, res, next) {
     next();
 }
 
+app.post("/api/admin/categorias",
+    verificarAdministrador,
+    async (req, res) => {
+
+    const { nombre } = req.body || {};
+
+    // Validar el nombre de la categoría
+    if (
+        typeof nombre !== "string" ||
+        nombre.trim().length < 3 ||
+        nombre.trim().length > 100
+    ) {
+        return res.status(400).json({
+            error: "La categoría debe tener entre 3 y 100 caracteres"
+        });
+    }
+
+    const nombreLimpio = nombre.trim();
+
+    try {
+        // Comprobar si existe la categoría
+        const existente = await pool.query(
+            `SELECT id
+             FROM categoria
+             WHERE LOWER(nombre) = LOWER($1)`,
+            [nombreLimpio]
+        );
+
+        if (existente.rows.length > 0) {
+            return res.status(409).json({
+                error: "Esta categoría ya existe"
+            });
+        }
+
+        // Crear nueva categoría
+        const resultado = await pool.query(
+            `INSERT INTO categoria (nombre)
+             VALUES ($1)
+             RETURNING id, nombre`,
+            [nombreLimpio]
+        );
+
+        return res.status(201).json({
+            mensaje: "Categoría creada correctamente",
+            categoria: resultado.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error al crear categoría:", error);
+
+        if (error.code === "23505") {
+            return res.status(409).json({
+                error: "Esta categoría ya existe"
+            });
+        }
+
+        return res.status(500).json({
+            error: "No se pudo crear la categoría"
+        });
+    }
+});
+
 app.get("/api/admin/usuarios", verificarAdministrador,
     async (req, res) => {
         try {

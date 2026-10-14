@@ -254,3 +254,57 @@ function agregarAccionesUsuarios(usuarios) {
         fila.appendChild(celda);
     });
 }
+
+const formCategoria =
+    document.getElementById("formCategoria");
+
+const mensajeCategoria =
+    document.getElementById("mensajeCategoria");
+
+formCategoria.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nombre =
+        document.getElementById("nombreCategoria").value.trim();
+
+    const boton =
+        document.getElementById("guardarCategoria");
+
+    boton.disabled = true;
+    mensajeCategoria.textContent = "Guardando categoría...";
+
+    try {
+        const respuesta = await fetch("/api/admin/categorias", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ nombre })
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error || "No se pudo crear la categoría"
+            );
+        }
+
+        mensajeCategoria.style.color = "green";
+        mensajeCategoria.textContent =
+            "Categoría creada correctamente";
+
+        formCategoria.reset();
+
+        // Actualizar la tabla sin recargar la página
+        await cargarDatos();
+
+    } catch (error) {
+        mensajeCategoria.style.color = "#b42318";
+        mensajeCategoria.textContent = error.message;
+
+    } finally {
+        boton.disabled = false;
+    }
+});
