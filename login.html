@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - Eventos UCN</title>
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <main class="login-container">
+      <form id="formLogin" class="login-card">
+        <img
+          src="imagenes/un-ucn-escudo-full-color.png"
+          alt="Logo UCN"
+          class="logo"
+        />
+
+        <h1>Eventos UCN</h1>
+        <h2>Iniciar sesión</h2>
+
+        <label for="correo">Correo electrónico</label>
+        <input
+          type="email"
+          id="correo"
+          name="correo"
+          required
+          autocomplete="username"
+          placeholder="correo@ejemplo.com"
+        />
+
+        <label for="contrasena">Contraseña</label>
+        <input
+          type="password"
+          id="contrasena"
+          name="contrasena"
+          required
+          autocomplete="current-password"
+          placeholder="Ingresa tu contraseña"
+        />
+
+        <button type="submit">Ingresar</button>
+
+        <p id="mensaje" role="status" aria-live="polite"></p>
+
+        <p style="text-align: center">
+          ¿No tienes una cuenta?
+          <a href="registro.html">Regístrate aquí</a>
+        </p>
+
+        <a href="index.html">Volver al inicio</a>
+      </form>
+    </main>
+
+    <script src="js/login.js" defer></script>
+  </body>
+</html>

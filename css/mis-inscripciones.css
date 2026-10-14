@@ -1,0 +1,43 @@
+
+.tarjeta-inscripcion {
+    background: #f2f4f7;
+    border-left: 5px solid #23415b;
+    border-radius: 8px;
+    padding: 22px;
+    margin: 18px 0;
+}
+
+.tarjeta-inscripcion h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #23415b;
+}
+
+.tarjeta-inscripcion p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.estado-activa {
+    color: #187347;
+    font-weight: bold;
+}
+
+.estado-cancelada {
+    color: #b42318;
+    font-weight: bold;
+}
+
+.btn-cancelar {
+    background: #b42318;
+    margin-top: 15px;
+}
+
+.btn-cancelar:hover {
+    background: #871a12;
+}
+
+.btn-cancelar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

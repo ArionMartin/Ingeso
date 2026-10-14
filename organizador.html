@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Organizador - UCN</title>
+    <link rel="stylesheet" href="css/organizador.css" />
+  </head>
+  <body>
+    <header class="barra">
+      <a href="/cambiar-clave.html">Cambiar contraseña</a>
+
+      <button type="button" id="cerrarSesion">Cerrar sesión</button>
+
+      <h1>Eventos UCN | Organizador</h1>
+      <a href="index.html">Volver al inicio</a>
+    </header>
+
+    <main class="contenedor">
+      <h2>Panel del organizador</h2>
+      <p id="bienvenida">Verificando sesión...</p>
+
+      <section class="panel">
+        <h3>Crear nuevo evento</h3>
+
+        <form id="formEvento">
+          <label for="titulo">Título del evento</label>
+          <input id="titulo" required maxlength="150" />
+
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" rows="4"></textarea>
+
+          <label for="fecha_inicio">Fecha y hora del evento</label>
+          <input type="datetime-local" id="fecha_inicio" required />
+
+          <label for="fecha_limite">Fecha límite de inscripción</label>
+          <input type="datetime-local" id="fecha_limite" required />
+
+          <label for="lugar">Lugar</label>
+          <input id="lugar" required maxlength="200" />
+
+          <label for="cupo_maximo">Cupo máximo</label>
+          <input type="number" id="cupo_maximo" min="1" required />
+
+          <label for="id_categoria">Categoría</label>
+          <select id="id_categoria" required>
+            <option value="">Seleccionar categoría</option>
+          </select>
+
+          <button type="submit" id="guardarEvento">Crear evento</button>
+
+          <button type="button" id="cancelarEdicion" hidden>
+            Salir de edición
+          </button>
+
+          <p id="mensaje" role="status"></p>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h3>Mis eventos</h3>
+
+        <div id="misEventos">Cargando eventos...</div>
+      </section>
+
+      <section class="panel">
+        <h3>Registro de asistencia</h3>
+
+        <label for="eventoAsistencia"> Seleccionar evento </label>
+
+        <select id="eventoAsistencia">
+          <option value="">Seleccione un evento</option>
+        </select>
+
+        <div id="listaAsistencia" aria-live="polite">
+          Selecciona un evento para consultar sus inscritos.
+        </div>
+      </section>
+    </main>
+
+    <script src="js/organizador.js" defer></script>
+  </body>
+</html>

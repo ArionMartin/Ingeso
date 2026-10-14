@@ -125,7 +125,7 @@ main .sobre-nosotros {
   width: 30px;
   height: 30px;
   padding: 2px;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, .5);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   margin-right: 5px;
 }
 
@@ -303,130 +303,256 @@ footer {
   color: #ccc;
 }
 
-@media screen and (max-width:900px){
-    header{
-        background-position: center;
+@media screen and (max-width: 900px) {
+  header {
+    background-position: center;
+  }
+  .contenerdor-sobre-nosotros {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .sobre-nosotros .contenido-textos {
+    width: 90%;
+  }
+  .imagen-about-us {
+    width: 90%;
+  }
+  /* Galeria */
 
-    }
-    .contenerdor-sobre-nosotros{
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+  .imagen-port {
+    width: 44%;
+  }
 
-    }
-    .sobre-nosotros .contenido-textos{
-        width : 90%;
+  /* Cleintes */
 
-    }
-    .imagen-about-us{
-        width: 90%;
-    }
-    /* Galeria */
+  .cards {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .imagen-port{
-        width:44%;
-    }
+  .cards .card {
+    width: 90%;
+  }
+  .cards .card:first-child {
+    margin-bottom: 30px;
+  }
 
-    /* Cleintes */
+  /*Servicios*/
 
-    .cards{
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+  .servicio-cont {
+    justify-content: center;
+    flex-direction: column;
+  }
+  .servicio-ind {
+    width: 100%;
+    text-align: center;
+  }
 
-    .cards .card{
-        width: 90%;
-
-    }
-    .cards .card:first-child{
-        margin-bottom: 30px;
-    }
-
-    /*Servicios*/
-
-    .servicio-cont{
-        justify-content:center;
-        flex-direction:column;
-    }
-    .servicio-ind{
-        width: 100%;
-        text-align:center;
-    }
-
-    .servicio-ind:nth-child(1) .servicio-ind:nth-child(2){
-        margin-bottom: 60px;
-    }
-    .servicio-ind img{
-        width: 90%;
-    }
-
-
-
+  .servicio-ind:nth-child(1) .servicio-ind:nth-child(2) {
+    margin-bottom: 60px;
+  }
+  .servicio-ind img {
+    width: 90%;
+  }
 }
 
-@media screen and (max-width:500px){
-    nav{
-        text-align:center;
-        padding: 30px 0 0 0;
-    }
-    nav > a{
-        margin-right: 5px;
-    }
-    .textos-header h1{
-        font-size: 35px;
-    }
-    .textos-header h2{
-        font-size: 20px;
-    }
-    /* About us */
-    .imagen-about-us{
-        margin-bottom: 60px;
-        width:99%;
-    }
+@media screen and (max-width: 500px) {
+  nav {
+    text-align: center;
+    padding: 30px 0 0 0;
+  }
+  nav > a {
+    margin-right: 5px;
+  }
+  .textos-header h1 {
+    font-size: 35px;
+  }
+  .textos-header h2 {
+    font-size: 20px;
+  }
+  /* About us */
+  .imagen-about-us {
+    margin-bottom: 60px;
+    width: 99%;
+  }
 
-    .sobre-nosotros .contenido-textos{
-        width : 95%;
-    }
-    /* Galeria */
+  .sobre-nosotros .contenido-textos {
+    width: 95%;
+  }
+  /* Galeria */
 
-    .imagen-port{
-        width: 95%
-    }
+  .imagen-port {
+    width: 95%;
+  }
 
-    /* Clientes */
-    .cards .card{
-        height: 450px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
-    }
-    .cards .card img{
-        width: 90px;
-        height: 90px;
-    }
-    /* Footer */
-    .contenedor-footer{
-        flex-direction :column;
-        border : none;
+  /* Clientes */
+  .cards .card {
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cards .card img {
+    width: 90px;
+    height: 90px;
+  }
+  /* Footer */
+  .contenedor-footer {
+    flex-direction: column;
+    border: none;
+  }
+  .content-foo {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .content-foo h4 {
+    border: none;
+  }
+  .content-foo p {
+    color: #ccc;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 20px;
+  }
+  .titulo-final {
+    font-size: 20px;
+  }
+}
 
-    }
-    .content-foo{
-        margin-bottom:20px;
-        text-align: center;
+/* Eventos académicos */
 
-    }
-    .content-foo h4{
-        border: none;
+.filtros-eventos {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
 
-    }
-    .content-foo p{
-        color: #ccc;
-        border-bottom: 1px solid #f2f2f2;
-        padding-bottom: 20px;
-    }
-    .titulo-final{
-        font-size: 20px;
-    }
+.filtros-eventos input,
+.filtros-eventos select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 200px;
+  font-family: inherit;
+}
+
+.lista-eventos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.tarjeta-evento {
+  padding: 25px;
+  background: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tarjeta-evento h3 {
+  color: #23415b;
+  margin-bottom: 15px;
+}
+
+.tarjeta-evento p {
+  margin-bottom: 12px;
+}
+
+.tarjeta-evento button {
+  background: #23415b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.tarjeta-evento button:hover {
+  background: #37688e;
+}
+
+/* Menú dinámico de Eventos UCN */
+
+nav.logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 30px;
+}
+
+nav.logo > a,
+#menuUsuario a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  margin: 0;
+}
+
+nav.logo > a:hover,
+#menuUsuario a:hover {
+  text-decoration: underline;
+}
+
+#menuUsuario {
+  display: contents;
+}
+
+.boton-salir {
+  background: #b42318;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.boton-salir:hover {
+  background: #871a12;
+}
+
+/* Conservar el logo a la izquierda */
+nav.logo > img {
+  position: absolute;
+  top: 110px;
+  left: 25px;
+  height: 150px;
+  margin: 0;
+  border-radius: 50%;
+}
+
+@media (max-width: 900px) {
+  nav.logo {
+    justify-content: center;
+    padding: 18px 15px;
+  }
+
+  nav.logo > img {
+    height: 95px;
+    top: 145px;
+    left: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  nav.logo {
+    gap: 10px;
+  }
+
+  nav.logo > a,
+  #menuUsuario a {
+    font-size: 13px;
+  }
+
+  nav.logo > img {
+    height: 75px;
+    top: 180px;
+  }
 }

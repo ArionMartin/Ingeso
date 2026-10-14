@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cambiar contraseña - Eventos UCN</title>
+
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <main class="login-container">
+      <form id="formCambiarClave" class="login-card">
+        <img
+          src="imagenes/un-ucn-escudo-full-color.png"
+          alt="Logo UCN"
+          class="logo"
+        />
+
+        <h1>Eventos UCN</h1>
+        <h2>Cambiar contraseña</h2>
+
+        <label for="claveActual"> Contraseña actual </label>
+        <input
+          type="password"
+          id="claveActual"
+          required
+          autocomplete="current-password"
+        />
+
+        <label for="claveNueva"> Nueva contraseña </label>
+        <input
+          type="password"
+          id="claveNueva"
+          required
+          minlength="6"
+          autocomplete="new-password"
+        />
+
+        <label for="confirmarClave"> Confirmar nueva contraseña </label>
+        <input
+          type="password"
+          id="confirmarClave"
+          required
+          minlength="6"
+          autocomplete="new-password"
+        />
+
+        <button type="submit">Guardar nueva contraseña</button>
+
+        <p id="mensaje" role="status" aria-live="polite"></p>
+
+        <a href="index.html">Volver al inicio</a>
+      </form>
+    </main>
+
+    <script src="js/cambiar-clave.js" defer></script>
+  </body>
+</html>

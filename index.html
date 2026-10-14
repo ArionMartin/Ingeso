@@ -19,18 +19,26 @@
   </head>
   <body>
     <header>
-      <nav class ="logo">
-        <a href="#">Inicio</a>
-        <a href="#">Acerda de</a>
-        <a href="#">Portafolio</a>
-        <a href="#">Servicios</a>
-        <a href="#">Contacto</a>
-        <img src="imagenes/un-ucn-escudo-full-color.png" alt="" />
+      <nav class="logo" aria-label="Navegación principal">
+        <a href="index.html">Inicio</a>
+        <a href="#acerca">Acerca de</a>
+        <a href="#portafolio">Portafolio</a>
+        <a href="#eventos">Eventos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#contacto">Contacto</a>
+
+        <!-- Opciones que cambian según la sesión -->
+        <span id="menuUsuario"></span>
+
+        <img
+          src="imagenes/un-ucn-escudo-full-color.png"
+          alt="Logo Universidad Católica del Norte"
+        />
       </nav>
+
       <section class="textos-header">
         <h1>Enventos Universidad Católica del Norte UCN</h1>
         <h2>Eventos académicos</h2>
-        
       </section>
       <div class="wave" style="height: 150px; overflow: hidden">
         <svg
@@ -49,7 +57,7 @@
       <section class="contenedor sobre-nosotros">
         <h2 class="titulo">Nuestra visión</h2>
         <div class="contenedor-sobre-nosotros">
-          <img src="imagenes/fotoimages.jpg" alt="" class="imagen-about-us">
+          <img src="imagenes/fotoimages.jpg" alt="" class="imagen-about-us" />
           <div class="contenido-textos">
             <h3><span>1</span>Vida Universitaria y Pastoral</h3>
             <p>
@@ -147,6 +155,28 @@
           </div>
         </div>
       </section>
+
+      <section class="eventos contenedor" id="eventos">
+        <h2 class="titulo">Próximos eventos académicos</h2>
+
+        <div class="filtros-eventos">
+          <input
+            type="search"
+            id="buscarEvento"
+            placeholder="Buscar evento..."
+            aria-label="Buscar eventos"
+          />
+
+          <select id="filtroCategoria" aria-label="Filtrar por categoría">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+
+        <div class="lista-eventos" id="listaEventos">
+          <p>Cargando eventos...</p>
+        </div>
+      </section>
+
       <section class="clientes contenedor">
         <h2 class="titulo">Que dicen nuestros Alumnos</h2>
         <div class="cards">
@@ -227,5 +257,8 @@
       </div>
       <h2 class="titulo-final">&copy; UCN eventos | Eventos académicos</h2>
     </footer>
+
+    <script src="js/eventos.js" defer></script>
+    <script src="js/menu.js" defer></script>
   </body>
 </html>
