@@ -149,6 +149,7 @@ agregarAccionesCategorias(categorias);
 await cargarEstadisticasEventos();
 await cargarGraficoInscripciones();
 await cargarGraficoAsistencias();
+await actualizarGraficosPorEstado();
 
 
 
@@ -562,48 +563,73 @@ async function cargarGraficoAsistencias() {
     }
 }
 
+
 async function actualizarGraficosPorEstado() {
-    const estado = document.getElementById("filtroEstado").value;
+    try {
+        const estado = document.getElementById("filtroEstado").value;
+        const categoria = document.getElementById("filtroCategoria").value;
 
-    const respuesta = await fetch(
-        "/api/admin/estadisticas-eventos",
-        { credentials: "same-origin" }
-    );
+        const respuesta = await fetch(
+            "/api/admin/estadisticas-eventos",
+            { credentials: "same-origin" }
+        );
 
-    if (!respuesta.ok) {
-        console.error("No se pudieron cargar los eventos");
-        return;
-    }
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar los eventos");
+        }
 
-    const eventos = await respuesta.json();
+        const eventos = await respuesta.json();
 
-    const filtrados = estado === "todos"
-        ? eventos
-        : eventos.filter(evento => evento.estado === estado);
+        const selector = document.getElementById("filtroCategoria");
+        const seleccion = selector.value;
 
-    if (graficoInscripciones) {
-        graficoInscripciones.data.labels =
-            filtrados.map(e => e.titulo);
+        const categorias = [...new Set(
+            eventos.map(e => e.categoria).filter(Boolean)
+        )].sort();
 
-        graficoInscripciones.data.datasets[0].data =
-            filtrados.map(e => e.inscritos);
+        selector.replaceChildren(new Option("Todas las categorías", "todas"));
 
-        graficoInscripciones.update();
-    }
+        categorias.forEach(nombre => {
+            selector.add(new Option(nombre, nombre));
+        });
 
-    if (graficoAsistencias) {
-        graficoAsistencias.data.labels =
-            filtrados.map(e => e.titulo);
+        selector.value = categorias.includes(seleccion)
+            ? seleccion
+            : "todas";
 
-        graficoAsistencias.data.datasets[0].data =
-            filtrados.map(e => e.inscritos);
+        const filtrados = eventos.filter(e =>
+            (estado === "todos" || e.estado === estado) &&
+            (categoria === "todas" || e.categoria === categoria)
+        );
 
-        graficoAsistencias.data.datasets[1].data =
-            filtrados.map(e => e.asistentes);
+        if (graficoInscripciones) {
+            graficoInscripciones.data.labels = filtrados.map(e => e.titulo);
+            graficoInscripciones.data.datasets[0].data =
+                filtrados.map(e => e.inscritos);
+            graficoInscripciones.update();
+        }
 
-        graficoAsistencias.update();
+        if (graficoAsistencias) {
+            graficoAsistencias.data.labels = filtrados.map(e =>
+                e.estado === "cancelado"
+                    ? `${e.titulo} (cancelado)`
+                    : e.titulo
+            );
+            graficoAsistencias.data.datasets[0].data =
+                filtrados.map(e => e.inscritos);
+            graficoAsistencias.data.datasets[1].data =
+                filtrados.map(e => e.asistentes);
+            graficoAsistencias.update();
+        }
+
+    } catch (error) {
+        console.error("Error en filtros:", error);
     }
 }
+
+document.getElementById("filtroCategoria")
+    .addEventListener("change", actualizarGraficosPorEstado);
+
 
 document.getElementById("filtroEstado")
     .addEventListener("change", actualizarGraficosPorEstado);

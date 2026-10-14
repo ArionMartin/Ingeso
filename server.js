@@ -1,13 +1,16 @@
-
-const bcrypt = require("bcrypt");
+const path = require("path");
 const session = require("express-session");
-const crypto = require("node:crypto");
 
 const express = require("express");
-const path = require("path");
+const app = express();
+
+const bcrypt = require("bcrypt");
+const crypto = require("node:crypto");
+
+
 const pool = require("./db");
 
-const app = express();
+
 const PORT = 3000;
 
 app.use(express.json());
@@ -25,13 +28,60 @@ app.use(session({
     }
 }));
 
-// Archivos estáticos de la página
-app.use(express.static(path.join(__dirname)));
 
-// Página principal
+
+
+function protegerPagina(rolPermitido) {
+    return (req, res, next) => {
+
+        if (!req.session?.usuario) {
+            return res.redirect("/login.html");
+        }
+
+        if (req.session.usuario.rol !== rolPermitido) {
+            return res.status(403).send(
+                "Acceso denegado: no tienes permisos."
+            );
+        }
+
+        next();
+    };
+}
+
+// Proteger página del administrador
+app.get(
+    "/administrador.html",
+    protegerPagina("administrador"),
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "public", "administrador.html")
+        );
+    }
+);
+
+// Proteger página del organizador
+app.get(
+    "/organizador.html",
+    protegerPagina("organizador"),
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "public", "organizador.html")
+        );
+    }
+);
+
+
+app.use(express.static(
+    path.join(__dirname, "public")
+));
+
+
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+    res.sendFile(
+        path.join(__dirname, "public", "index.html")
+    );
 });
+
 
 // Ruta de prueba
 app.get("/api/saludo", (req, res) => {
@@ -1453,6 +1503,7 @@ app.get("/api/admin/estadisticas-eventos",
                 e.titulo,
                 e.estado,
                 e.cupo_maximo,
+                c.nombre AS categoria,
 
                 COUNT(i.id) FILTER (
                     WHERE i.estado = 'activa'
@@ -1472,6 +1523,7 @@ app.get("/api/admin/estadisticas-eventos",
                 )::INTEGER AS disponibles
 
             FROM evento e
+            JOIN categoria c ON c.id = e.id_categoria
             LEFT JOIN inscripcion i
                 ON i.id_evento = e.id
 
@@ -1479,7 +1531,8 @@ app.get("/api/admin/estadisticas-eventos",
                 e.id,
                 e.titulo,
                 e.estado,
-                e.cupo_maximo
+                e.cupo_maximo,
+                c.nombre
 
             ORDER BY e.id;
         `);
