@@ -148,6 +148,7 @@ agregarAccionesCategorias(categorias);
 
 await cargarEstadisticasEventos();
 await cargarGraficoInscripciones();
+await cargarGraficoAsistencias();
 
 
 
@@ -492,5 +493,71 @@ async function cargarGraficoInscripciones() {
 
     } catch (error) {
         console.error("Error al crear gráfico:", error);
+    }
+}
+
+let graficoAsistencias = null;
+
+async function cargarGraficoAsistencias() {
+    try {
+        const respuesta = await fetch(
+            "/api/admin/estadisticas-eventos",
+            { credentials: "same-origin" }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar los datos");
+        }
+
+        const eventos = await respuesta.json();
+        const canvas = document.getElementById("graficoAsistencias");
+
+        if (!canvas || typeof Chart === "undefined") {
+            throw new Error("No se encontró el gráfico o Chart.js");
+        }
+
+        if (graficoAsistencias) {
+            graficoAsistencias.destroy();
+        }
+
+        graficoAsistencias = new Chart(canvas, {
+            type: "bar",
+            data: {
+                labels: eventos.map(e =>
+                    e.estado === "cancelado"
+                        ? `${e.titulo} (cancelado)`
+                        : e.titulo
+                ),
+                datasets: [
+                    {
+                        label: "Inscripciones activas",
+                        data: eventos.map(e => e.inscritos),
+                        backgroundColor: "#23415b",
+                        borderRadius: 5
+                    },
+                    {
+                        label: "Asistencias",
+                        data: eventos.map(e => e.asistentes),
+                        backgroundColor: "#26a69a",
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Error en gráfico de asistencias:", error);
     }
 }
