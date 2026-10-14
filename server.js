@@ -1240,6 +1240,72 @@ app.post("/api/admin/categorias",
     }
 });
 
+app.patch("/api/admin/categorias/:id",
+    verificarAdministrador,
+    async (req, res) => {
+
+    const id = Number(req.params.id);
+    const { nombre } = req.body || {};
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            error: "ID de categoría inválido"
+        });
+    }
+
+    if (
+        typeof nombre !== "string" ||
+        nombre.trim().length < 3 ||
+        nombre.trim().length > 100
+    ) {
+        return res.status(400).json({
+            error: "El nombre debe tener entre 3 y 100 caracteres"
+        });
+    }
+
+    const nombreLimpio = nombre.trim();
+
+    try {
+        const resultado = await pool.query(
+            `UPDATE categoria
+             SET nombre = $1
+             WHERE id = $2
+               AND NOT EXISTS (
+                   SELECT 1
+                   FROM categoria
+                   WHERE LOWER(nombre) = LOWER($1)
+                     AND id <> $2
+               )
+             RETURNING id, nombre`,
+            [nombreLimpio, id]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(409).json({
+                error: "Categoría no encontrada o nombre duplicado"
+            });
+        }
+
+        res.json({
+            mensaje: "Categoría actualizada correctamente",
+            categoria: resultado.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error al editar categoría:", error);
+
+        if (error.code === "23505") {
+            return res.status(409).json({
+                error: "Ya existe una categoría con ese nombre"
+            });
+        }
+
+        res.status(500).json({
+            error: "No se pudo actualizar la categoría"
+        });
+    }
+});
+
 app.get("/api/admin/usuarios", verificarAdministrador,
     async (req, res) => {
         try {

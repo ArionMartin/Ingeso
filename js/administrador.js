@@ -137,10 +137,14 @@ agregarAccionesUsuarios(usuarios);
             { titulo: "Estado", campo: "estado" }
         ], eventos);
 
-        mostrarTabla("listaCategorias", [
-            { titulo: "ID", campo: "id" },
-            { titulo: "Categoría", campo: "nombre" }
-        ], categorias);
+       
+mostrarTabla("listaCategorias", [
+    { titulo: "ID", campo: "id" },
+    { titulo: "Categoría", campo: "nombre" }
+], categorias);
+
+agregarAccionesCategorias(categorias);
+
 
     } catch (error) {
         mensaje.textContent = error.message;
@@ -308,3 +312,83 @@ formCategoria.addEventListener("submit", async (event) => {
         boton.disabled = false;
     }
 });
+
+function agregarAccionesCategorias(categorias) {
+    const tabla = document.querySelector(
+        "#listaCategorias table"
+    );
+
+    if (!tabla) return;
+
+    const encabezado = tabla.querySelector("thead tr");
+
+    const th = document.createElement("th");
+    th.textContent = "Acciones";
+    encabezado.appendChild(th);
+
+    const filas = tabla.querySelectorAll("tbody tr");
+
+    filas.forEach((fila, indice) => {
+        const categoria = categorias[indice];
+
+        const celda = document.createElement("td");
+
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.textContent = "Editar";
+        boton.className = "btn-editar-categoria";
+
+        boton.addEventListener("click", async () => {
+            const nuevoNombre = prompt(
+                "Nuevo nombre de la categoría:",
+                categoria.nombre
+            );
+
+            if (nuevoNombre === null) return;
+
+            const nombre = nuevoNombre.trim();
+
+            if (nombre.length < 3 || nombre.length > 100) {
+                alert("El nombre debe tener entre 3 y 100 caracteres");
+                return;
+            }
+
+            if (nombre === categoria.nombre) return;
+
+            boton.disabled = true;
+
+            try {
+                const respuesta = await fetch(
+                    `/api/admin/categorias/${categoria.id}`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "same-origin",
+                        body: JSON.stringify({ nombre })
+                    }
+                );
+
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        datos.error || "No se pudo editar"
+                    );
+                }
+
+                alert("Categoría actualizada correctamente");
+
+                await cargarDatos();
+
+            } catch (error) {
+                alert(error.message);
+                boton.disabled = false;
+            }
+        });
+
+        celda.appendChild(boton);
+        fila.appendChild(celda);
+    });
+}
