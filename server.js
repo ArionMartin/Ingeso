@@ -52,6 +52,50 @@ function verificarOrigen(req, res, next) {
 app.use(verificarOrigen);
 
 
+app.get("/api/csrf-token", (req, res) => {
+    if (!req.session.csrfToken) {
+        req.session.csrfToken =
+            crypto.randomBytes(32).toString("hex");
+    }
+
+    res.set("Cache-Control", "no-store");
+
+    res.json({
+        csrfToken: req.session.csrfToken
+    });
+});
+
+
+function verificarCSRF(req, res, next) {
+    const metodosSeguros = ["GET", "HEAD", "OPTIONS"];
+
+    if (metodosSeguros.includes(req.method)) {
+        return next();
+    }
+
+    const tokenSesion = req.session?.csrfToken;
+    const tokenRecibido = req.get("X-CSRF-Token");
+
+    if (!tokenSesion || !tokenRecibido) {
+        return res.status(403).json({
+            error: "Token CSRF obligatorio"
+        });
+    }
+
+    const esperado = Buffer.from(tokenSesion, "utf8");
+    const recibido = Buffer.from(tokenRecibido, "utf8");
+
+    if (
+        esperado.length !== recibido.length ||
+        !crypto.timingSafeEqual(esperado, recibido)
+    ) {
+        return res.status(403).json({
+            error: "Token CSRF inválido"
+        });
+    }
+
+    next();
+}
 
 
 

@@ -161,7 +161,7 @@ await actualizarGraficosPorEstado();
 document.getElementById("cerrarSesion")
     .addEventListener("click", async () => {
         try {
-            const respuesta = await fetch("/api/logout", {
+            const respuesta = await fetchSeguro("/api/logout", {
                 method: "POST",
                 credentials: "same-origin"
             });
@@ -232,7 +232,7 @@ function agregarAccionesUsuarios(usuarios) {
             boton.disabled = true;
 
             try {
-                const respuesta = await fetch(
+                const respuesta = await fetchSeguro(
                     `/api/admin/usuarios/${usuario.id}/rol`,
                     {
                         method: "PATCH",
@@ -285,7 +285,7 @@ formCategoria.addEventListener("submit", async (event) => {
     mensajeCategoria.textContent = "Guardando categoría...";
 
     try {
-        const respuesta = await fetch("/api/admin/categorias", {
+        const respuesta = await fetchSeguro("/api/admin/categorias", {
             method: "POST",
             credentials: "same-origin",
             headers: {
@@ -365,7 +365,7 @@ function agregarAccionesCategorias(categorias) {
             boton.disabled = true;
 
             try {
-                const respuesta = await fetch(
+                const respuesta = await fetchSeguro(
                     `/api/admin/categorias/${categoria.id}`,
                     {
                         method: "PATCH",

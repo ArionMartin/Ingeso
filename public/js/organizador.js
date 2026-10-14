@@ -77,7 +77,7 @@ const url = eventoEnEdicion
 
 const metodo = eventoEnEdicion ? "PUT" : "POST";
 
-const respuesta = await fetch(url, {
+const respuesta = await fetchSeguro(url, {
     method: metodo,
     headers: {
         "Content-Type": "application/json"
@@ -173,7 +173,7 @@ if (evento.estado !== "cancelado") {
         botonCancelar.disabled = true;
 
         try {
-            const respuesta = await fetch(
+            const respuesta = await fetchSeguro(
                 `/api/eventos/${evento.id}/cancelar`,
                 { method: "PATCH" }
             );
@@ -208,7 +208,7 @@ if (evento.estado !== "cancelado") {
                     boton.disabled = true;
 
                     try {
-                        const respuesta = await fetch(
+                        const respuesta = await fetchSeguro(
                             `/api/eventos/${evento.id}/publicar`,
                             { method: "PATCH" }
                         );
@@ -243,7 +243,7 @@ cargarMisEventos();
 document.getElementById("cerrarSesion")
     .addEventListener("click", async () => {
         try {
-            const respuesta = await fetch("/api/logout", {
+            const respuesta = await fetchSeguro("/api/logout", {
                 method: "POST",
                 credentials: "same-origin"
             });
@@ -351,7 +351,7 @@ async function cargarInscritos() {
                 casilla.disabled = true;
 
                 try {
-                    const respuesta = await fetch(
+                    const respuesta = await fetchSeguro(
                         `/api/inscripciones/${inscrito.id_inscripcion}/asistencia`,
                         {
                             method: "PATCH",

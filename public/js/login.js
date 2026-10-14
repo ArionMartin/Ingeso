@@ -11,7 +11,7 @@ formulario.addEventListener("submit", async (event) => {
     mensaje.textContent = "Verificando credenciales...";
 
     try {
-        const respuesta = await fetch("/api/login", {
+        const respuesta = await fetchSeguro("/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

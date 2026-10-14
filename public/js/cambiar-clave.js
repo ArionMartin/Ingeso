@@ -43,7 +43,7 @@ formulario.addEventListener("submit", async (event) => {
     mensaje.textContent = "Actualizando contraseña...";
 
     try {
-        const respuesta = await fetch("/api/cambiar-clave", {
+        const respuesta = await fetchSeguro("/api/cambiar-clave", {
             method: "POST",
             credentials: "same-origin",
             headers: {

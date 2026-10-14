@@ -25,7 +25,7 @@ formulario.addEventListener("submit", async (event) => {
     mensaje.textContent = "Registrando estudiante...";
 
     try {
-        const respuesta = await fetch("/api/registro", {
+        const respuesta = await fetchSeguro("/api/registro", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

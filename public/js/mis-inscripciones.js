@@ -114,7 +114,7 @@ async function cargarInscripciones() {
                         boton.disabled = true;
 
                         try {
-                            const respuesta = await fetch(
+                            const respuesta = await fetchSeguro(
                                 `/api/inscripciones/${inscripcion.id}/cancelar`,
                                 {
                                     method: "PATCH",
