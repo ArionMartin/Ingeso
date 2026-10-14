@@ -29,6 +29,32 @@ app.use(session({
 }));
 
 
+function verificarOrigen(req, res, next) {
+    const metodosSeguros = ["GET", "HEAD", "OPTIONS"];
+
+    if (metodosSeguros.includes(req.method)) {
+        return next();
+    }
+
+    const origen = req.get("Origin");
+
+    const origenPermitido = "http://localhost:3000";
+
+    if (origen !== origenPermitido) {
+        return res.status(403).json({
+            error: "Solicitud bloqueada: origen no autorizado"
+        });
+    }
+
+    next();
+}
+
+app.use(verificarOrigen);
+
+
+
+
+
 
 
 function protegerPagina(rolPermitido) {
