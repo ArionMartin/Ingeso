@@ -147,6 +147,7 @@ mostrarTabla("listaCategorias", [
 agregarAccionesCategorias(categorias);
 
 await cargarEstadisticasEventos();
+await cargarGraficoInscripciones();
 
 
 
@@ -435,5 +436,61 @@ async function cargarEstadisticasEventos() {
 
     } catch (error) {
         contenedor.textContent = error.message;
+    }
+}
+
+let graficoInscripciones = null;
+
+async function cargarGraficoInscripciones() {
+    try {
+        const respuesta = await fetch(
+            "/api/admin/estadisticas-eventos",
+            { credentials: "same-origin" }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron obtener los datos");
+        }
+
+        const eventos = await respuesta.json();
+
+        const canvas =
+            document.getElementById("graficoInscripciones");
+
+        if (!canvas || typeof Chart === "undefined") {
+            throw new Error("Chart.js no está disponible");
+        }
+
+        if (graficoInscripciones) {
+            graficoInscripciones.destroy();
+        }
+
+        graficoInscripciones = new Chart(canvas, {
+            type: "bar",
+            data: {
+                labels: eventos.map(e => e.titulo),
+                datasets: [{
+                    label: "Inscripciones activas",
+                    data: eventos.map(e => e.inscritos),
+                    backgroundColor: "#23415b",
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Error al crear gráfico:", error);
     }
 }
