@@ -561,3 +561,49 @@ async function cargarGraficoAsistencias() {
         console.error("Error en gráfico de asistencias:", error);
     }
 }
+
+async function actualizarGraficosPorEstado() {
+    const estado = document.getElementById("filtroEstado").value;
+
+    const respuesta = await fetch(
+        "/api/admin/estadisticas-eventos",
+        { credentials: "same-origin" }
+    );
+
+    if (!respuesta.ok) {
+        console.error("No se pudieron cargar los eventos");
+        return;
+    }
+
+    const eventos = await respuesta.json();
+
+    const filtrados = estado === "todos"
+        ? eventos
+        : eventos.filter(evento => evento.estado === estado);
+
+    if (graficoInscripciones) {
+        graficoInscripciones.data.labels =
+            filtrados.map(e => e.titulo);
+
+        graficoInscripciones.data.datasets[0].data =
+            filtrados.map(e => e.inscritos);
+
+        graficoInscripciones.update();
+    }
+
+    if (graficoAsistencias) {
+        graficoAsistencias.data.labels =
+            filtrados.map(e => e.titulo);
+
+        graficoAsistencias.data.datasets[0].data =
+            filtrados.map(e => e.inscritos);
+
+        graficoAsistencias.data.datasets[1].data =
+            filtrados.map(e => e.asistentes);
+
+        graficoAsistencias.update();
+    }
+}
+
+document.getElementById("filtroEstado")
+    .addEventListener("change", actualizarGraficosPorEstado);

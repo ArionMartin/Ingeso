@@ -88,6 +88,17 @@
       <section class="panel-admin">
         <h3>Gráfico de inscripciones por evento</h3>
 
+        <div class="filtros-estadisticas">
+          <label for="filtroEstado">Filtrar por estado:</label>
+
+          <select id="filtroEstado">
+            <option value="todos">Todos los eventos</option>
+            <option value="publicado">Publicados</option>
+            <option value="cancelado">Cancelados</option>
+            <option value="borrador">Borradores</option>
+          </select>
+        </div>
+
         <div class="contenedor-grafico">
           <canvas id="graficoInscripciones"></canvas>
         </div>

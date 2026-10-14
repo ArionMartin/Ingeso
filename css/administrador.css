@@ -210,3 +210,25 @@ th {
     height: 300px;
   }
 }
+
+.filtros-estadisticas {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filtros-estadisticas select {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  color: #23415b;
+}
+
+@media (max-width: 600px) {
+  .filtros-estadisticas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
