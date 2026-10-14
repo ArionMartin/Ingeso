@@ -1441,6 +1441,60 @@ app.patch("/api/admin/usuarios/:id/rol",
     }
 });
 
+
+app.get("/api/admin/estadisticas-eventos",
+    verificarAdministrador,
+    async (req, res) => {
+
+    try {
+        const resultado = await pool.query(`
+            SELECT
+                e.id,
+                e.titulo,
+                e.estado,
+                e.cupo_maximo,
+
+                COUNT(i.id) FILTER (
+                    WHERE i.estado = 'activa'
+                )::INTEGER AS inscritos,
+
+                COUNT(i.id) FILTER (
+                    WHERE i.estado = 'activa'
+                    AND i.asistio = TRUE
+                )::INTEGER AS asistentes,
+
+                GREATEST(
+                    e.cupo_maximo -
+                    COUNT(i.id) FILTER (
+                        WHERE i.estado = 'activa'
+                    ),
+                    0
+                )::INTEGER AS disponibles
+
+            FROM evento e
+            LEFT JOIN inscripcion i
+                ON i.id_evento = e.id
+
+            GROUP BY
+                e.id,
+                e.titulo,
+                e.estado,
+                e.cupo_maximo
+
+            ORDER BY e.id;
+        `);
+
+        res.json(resultado.rows);
+
+    } catch (error) {
+        console.error("Error en estadísticas:", error);
+
+        res.status(500).json({
+            error: "No se pudieron consultar las estadísticas"
+        });
+    }
+});
+
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log(

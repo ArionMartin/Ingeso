@@ -90,6 +90,7 @@ async function iniciarAdministrador() {
         contenido.hidden = false;
 
         await cargarDatos();
+        
 
     } catch (error) {
         mensaje.textContent = error.message;
@@ -144,6 +145,9 @@ mostrarTabla("listaCategorias", [
 ], categorias);
 
 agregarAccionesCategorias(categorias);
+
+await cargarEstadisticasEventos();
+
 
 
     } catch (error) {
@@ -391,4 +395,45 @@ function agregarAccionesCategorias(categorias) {
         celda.appendChild(boton);
         fila.appendChild(celda);
     });
+}
+
+async function cargarEstadisticasEventos() {
+    const contenedor =
+        document.getElementById("estadisticasEventos");
+
+    try {
+        const respuesta = await fetch(
+            "/api/admin/estadisticas-eventos",
+            { credentials: "same-origin" }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar las estadísticas");
+        }
+
+        const eventos = await respuesta.json();
+
+        const datos = eventos.map(evento => ({
+            ...evento,
+            porcentaje:
+                evento.inscritos > 0
+                    ? (
+                        evento.asistentes /
+                        evento.inscritos * 100
+                      ).toFixed(1) + "%"
+                    : "0%"
+        }));
+
+        mostrarTabla("estadisticasEventos", [
+            { titulo: "Evento", campo: "titulo" },
+            { titulo: "Estado", campo: "estado" },
+            { titulo: "Inscritos", campo: "inscritos" },
+            { titulo: "Disponibles", campo: "disponibles" },
+            { titulo: "Asistentes", campo: "asistentes" },
+            { titulo: "% asistencia", campo: "porcentaje" }
+        ], datos);
+
+    } catch (error) {
+        contenedor.textContent = error.message;
+    }
 }
