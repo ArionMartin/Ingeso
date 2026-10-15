@@ -89,7 +89,7 @@ function mostrarEventos() {
       boton.textContent = "Inscribiendo...";
 
       try {
-        const respuesta = await fetch("/api/inscripciones", {
+        const respuesta = await fetchSeguro("/api/inscripciones", {
           method: "POST",
           credentials: "same-origin",
           headers: {

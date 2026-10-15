@@ -93,6 +93,8 @@ function verificarCSRF(req, res, next) {
   next();
 }
 
+app.use(verificarCSRF);
+
 function protegerPagina(rolPermitido) {
   return (req, res, next) => {
     if (!req.session?.usuario) {

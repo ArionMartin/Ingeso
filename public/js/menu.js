@@ -67,11 +67,10 @@ async function configurarMenu() {
       botonSalir.disabled = true;
 
       try {
-        const respuesta = await fetch("/api/logout", {
+        const respuesta = await fetchSeguro("/api/logout", {
           method: "POST",
-          credentials: "same-origin",
         });
-
+        
         if (!respuesta.ok) {
           throw new Error("No se pudo cerrar sesión");
         }
