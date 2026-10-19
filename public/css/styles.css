@@ -556,3 +556,55 @@ nav.logo > img {
     top: 180px;
   }
 }
+
+/* CORRECCIÓN: SECCIÓN NUESTRA VISIÓN */
+
+.sobre-nosotros {
+  width: 100%;
+}
+
+.contenedor-sobre-nosotros {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.imagen-about-us {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.contenido-textos {
+  width: 100%;
+  min-width: 0;
+}
+
+.contenido-textos h3,
+.contenido-textos p {
+  overflow-wrap: break-word;
+}
+
+/* DISEÑO RESPONSIVE PARA CELULARES */
+
+@media (max-width: 768px) {
+  .contenedor-sobre-nosotros {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .imagen-about-us {
+    height: auto;
+    max-height: 350px;
+    object-fit: contain;
+  }
+
+  .contenido-textos {
+    width: 100%;
+  }
+}
