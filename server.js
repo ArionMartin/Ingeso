@@ -12,6 +12,14 @@ const pool = require("./db");
 const PORT = 3000;
 
 app.use(express.json());
+app.use((req, res, next) => {
+  if (req.path === "/api/inscripciones") {
+    console.log("CONTENT-TYPE:", req.headers["content-type"]);
+    console.log("MÉTODO:", req.method);
+    console.log("BODY:", req.body);
+  }
+  next();
+});
 
 app.use(
   session({
@@ -896,6 +904,9 @@ function verificarParticipante(req, res, next) {
 }
 
 app.post("/api/inscripciones", verificarParticipante, async (req, res) => {
+  console.log("BODY RECIBIDO:", req.body);
+  console.log("ID EVENTO:", req.body?.id_evento);
+
   const idEvento = Number(req.body?.id_evento);
   const idUsuario = req.session.usuario.id;
 
