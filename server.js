@@ -45,9 +45,12 @@ function verificarOrigen(req, res, next) {
 
   const origen = req.get("Origin");
 
-  const origenPermitido = "http://localhost:3000";
+  const origenesPermitidos = [
+    "http://localhost:3000",
+    "https://eventos-ucn.onrender.com",
+  ];
 
-  if (origen !== origenPermitido) {
+  if (!origen || !origenesPermitidos.includes(origen)) {
     return res.status(403).json({
       error: "Solicitud bloqueada: origen no autorizado",
     });
