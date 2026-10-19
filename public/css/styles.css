@@ -557,54 +557,68 @@ nav.logo > img {
   }
 }
 
-/* CORRECCIÓN: SECCIÓN NUESTRA VISIÓN */
+/* NUESTRA VISIÓN */
 
-.sobre-nosotros {
+section.contenedor.sobre-nosotros {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 24px;
+  box-sizing: border-box;
 }
 
-.contenedor-sobre-nosotros {
+.sobre-nosotros .contenedor-sobre-nosotros {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 45px;
   align-items: center;
-  gap: 40px;
   width: 100%;
+  max-width: none;
+  box-sizing: border-box;
 }
 
-.imagen-about-us {
+.sobre-nosotros .imagen-about-us {
   display: block;
   width: 100%;
   max-width: 100%;
-  height: 350px;
+  height: 380px;
   object-fit: cover;
   border-radius: 12px;
 }
 
-.contenido-textos {
+.sobre-nosotros .contenido-textos {
   width: 100%;
   min-width: 0;
+  max-width: none;
 }
 
-.contenido-textos h3,
-.contenido-textos p {
+.sobre-nosotros .contenido-textos h3 {
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.sobre-nosotros .contenido-textos p {
+  margin: 0 0 24px;
+  text-align: left;
+  line-height: 1.7;
   overflow-wrap: break-word;
 }
 
-/* DISEÑO RESPONSIVE PARA CELULARES */
+/* TABLET Y CELULARES */
 
 @media (max-width: 768px) {
-  .contenedor-sobre-nosotros {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  section.contenedor.sobre-nosotros {
+    padding: 35px 20px;
   }
 
-  .imagen-about-us {
+  .sobre-nosotros .contenedor-sobre-nosotros {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .sobre-nosotros .imagen-about-us {
     height: auto;
     max-height: 350px;
-    object-fit: contain;
-  }
-
-  .contenido-textos {
-    width: 100%;
+    object-fit: cover;
   }
 }
