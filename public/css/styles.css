@@ -148,6 +148,14 @@ main .sobre-nosotros {
   margin-bottom: 10px;
 }
 
+.imagen-port {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
 .galeria-port {
   display: flex;
   justify-content: space-evenly;
